@@ -103,7 +103,7 @@ class Player(pygame.sprite.Sprite):
     def move_down(self):
         if self.rect.bottom < game_height - padding_y:
             self.y += 2
-            self.image_index = 2  # Moving down
+            self.image_index = 2  
             return True
         return False
     
@@ -153,7 +153,6 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
             player.score += 1
 
-
         if self.x > game_width:
             self.kill()
 
@@ -183,8 +182,8 @@ class EnemyShip(pygame.sprite.Sprite):
             explosion = Explosion(self.rect.centerx, self.rect.centery)
             explosion_group.add(explosion)
             explosion_sound.play()
-            self.kill()
             player.score += 1
+            self.kill()
 
         if self.x < 0:
             self.kill()
@@ -200,148 +199,6 @@ player_x = 30
 player_y = game_height // 2
 player = Player(player_x, player_y)
 player_group.add(player)
-
-
-# # Game loop
-# clock = pygame.time.Clock()
-# fps = 120
-# running = True
-
-# while running:
-#     clock.tick(fps)
-
-#     for event in pygame.event.get():
-#         if event.type == QUIT:
-#             running = False
-            
-#     keys = pygame.key.get_pressed()
-    
-#     # move the airplane using the up/down arrow keys
-#     if keys[K_UP] and player.rect.top > padding_y:
-#         player.move_up()
-#     elif keys[K_DOWN] and player.rect.bottom < game_height - padding_y:
-#         player.move_down()
-#     else:
-#          player.stop_moving()
-         
-#     # Shoot bullet with space bar
-#     if keys[K_SPACE] and last_bullet_time + bullet_cooldown < pygame.time.get_ticks():
-#         bullet_x = player.x + player.image.get_width()
-#         bullet_y = player.y + player.image.get_height() // 2
-#         bullet = Bullet(bullet_x, bullet_y)
-#         bullet_group.add(bullet)
-#         laser_sound.play()
-#         last_bullet_time = pygame.time.get_ticks()
-        
-#     # Spawn a new enemy ship
-#     if next_enemy_ship < pygame.time.get_ticks():
-#         enemy_ship = EnemyShip()
-#         enemy_ship_group.add(enemy_ship)
-#         next_enemy_ship = pygame.time.get_ticks() + random.randint(500, 3000)
-        
-#     # Bullet-enemy collision and explosion management
-#     for bullet in bullet_group:
-#         hit_enemy = pygame.sprite.spritecollideany(bullet, enemy_ship_group)
-#         if hit_enemy:
-#             if not hasattr(hit_enemy, 'destroyed') or not hit_enemy.destroyed:
-#                 explosion = Explosion(hit_enemy.rect.centerx, hit_enemy.rect.centery)
-#                 explosion_group.add(explosion)
-#                 hit_enemy.destroyed = True
-#                 hit_enemy.kill()
-#                 bullet.kill() 
-                
-#     # Check for collisions between the player and enemy ships
-#     hit_enemy = pygame.sprite.spritecollideany(player, enemy_ship_group)
-#     if hit_enemy:
-#         # Trigger explosion at the enemy's location and decrement player's life
-#         explosion = Explosion(hit_enemy.rect.centerx, hit_enemy.rect.centery)
-#         explosion_group.add(explosion)
-#         player.lives -= 1  
-#         hit_enemy.kill()
-        
-#     # Draw the background
-#     game_window.blit(bg, (0 - bg_scroll, 0))
-#     game_window.blit(bg, (game_width - bg_scroll, 0))
-#     bg_scroll += 1
-#     if bg_scroll == game_width:
-#         bg_scroll = 0
-
-#     # Draw the player
-#     player_group.update()
-#     player_group.draw(game_window)
-    
-#      # Draw bullets
-#     bullet_group.update()
-#     for bullet in bullet_group:
-#         bullet.draw()
-
-#     # Draw enemy ships
-#     enemy_ship_group.update()
-#     enemy_ship_group.draw(game_window)
-
-#     # Draw explosions
-#     explosion_group.update()
-#     explosion_group.draw(game_window)
-    
-#     # Display remaining lives
-#     for i in range(player.lives):
-#         heart_image = heart_images[int(heart_image_index)]
-#         heart_x = 10 + i * (heart_image.get_width() + 10)
-#         heart_y = 10
-#         game_window.blit(heart_image, (heart_x, heart_y))
-#     heart_image_index = (heart_image_index + 0.1) % len(heart_images)
-
-#     # Display the score
-#     font = pygame.font.Font(pygame.font.get_default_font(), 16)
-#     text = font.render(f'Score: {player.score}', True, white)
-#     text_rect = text.get_rect()
-#     text_rect.center = (200, 20)
-#     game_window.blit(text, text_rect)
-    
-#     # Check if game is over and set game_over flag
-#     if player.lives == 0:
-#         game_over = True
-#         background_music.stop()
-
-#     if game_over:
-#         # Display "Game Over" message
-#         font = pygame.font.Font(pygame.font.get_default_font(), 24)
-#         gameover_str = 'Game over. Play again (y or n)?'
-#         text = font.render(gameover_str, True, red)
-#         text_rect = text.get_rect(center=(game_width / 2, game_height / 2))
-#         game_window.blit(text, text_rect)
-        
-#         # Update display to show the game-over screen
-#         pygame.display.flip()
-
-#         # Handle input for restarting or quitting
-#         keys = pygame.key.get_pressed()
-#         if keys[K_y]:
-#             # Restart the game
-#             game_over = False
-#             player.lives = 3
-#             player.score = 0
-            
-#             # Clear sprite groups
-#             player_group.empty()
-#             bullet_group.empty()
-#             enemy_ship_group.empty()
-#             explosion_group.empty()
-            
-#             # Re-add the player
-#             player = Player(player_x, player_y)
-#             player_group.add(player)
-            
-#             # Restart background music
-#             background_music.play(-1)
-            
-#         elif keys[K_n]:
-#             running = False
-#             break
-        
-#         pygame.display.flip()
-
-# pygame.quit()
 
 # Game loop
 clock = pygame.time.Clock()
@@ -370,8 +227,9 @@ while running:
         bullet_y = player.y + player.image.get_height() // 2
         bullet = Bullet(bullet_x, bullet_y)
         bullet_group.add(bullet)
-        last_bullet_time = pygame.time.get_ticks()
         laser_sound.play()
+        last_bullet_time = pygame.time.get_ticks()
+        
 
     # Spawn a new enemy ship
     if next_enemy_ship < pygame.time.get_ticks():
@@ -379,14 +237,14 @@ while running:
         enemy_ship_group.add(enemy_ship)
         next_enemy_ship = pygame.time.get_ticks() + random.randint(500, 3000)
         
-    #Check for collisions between the player and enemy ships
+    # #Check for collisions between the player and enemy ships
     hit_enemy = pygame.sprite.spritecollideany(player, enemy_ship_group)
     if hit_enemy:
-        # Trigger explosion at the enemy's location and decrement player's life
         explosion = Explosion(hit_enemy.rect.centerx, hit_enemy.rect.centery)
         explosion_group.add(explosion)
-        player.lives -= 1  
-        hit_enemy.kill()  
+        explosion_sound.play()
+        player.lives -= 1 
+        hit_enemy.kill() 
         
     # Draw the background
     game_window.blit(bg, (0 - bg_scroll, 0))
@@ -419,7 +277,6 @@ while running:
         heart_y = 10
         game_window.blit(heart_image, (heart_x, heart_y))
     heart_image_index += 0.1
-    
     if heart_image_index >= len(heart_images):
         heart_image_index = 0
 
@@ -433,7 +290,8 @@ while running:
     pygame.display.update()
     
     # Check if game is over
-    while player.lives == 0:
+    if player.lives == 0:
+        background_music.stop()
         
         clock.tick(fps)
 
@@ -455,10 +313,13 @@ while running:
             player_group.empty()
             bullet_group.empty()
             enemy_ship_group.empty()
+            explosion_group.empty()
+            player.lives = 3
 
             # reset the player
             player = Player(player_x, player_y)
             player_group.add(player)
+            background_music.play(-1)
 
         elif keys[K_n]:
             running = False
